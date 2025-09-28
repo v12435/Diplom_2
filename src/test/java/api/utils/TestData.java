@@ -21,14 +21,10 @@ public class TestData {
         return "TestUser";
     }
 
-    // Валидные ингредиенты — всегда запрашиваем с сервера
     public static List<String> validIngredients() {
         String response = given()
-                .get("/api/ingredients")   // ✅ теперь без хардкода
                 .then()
                 .statusCode(200)
-                .extract()
-                .asString();
 
         JsonPath json = new JsonPath(response);
         List<String> ingredients = json.getList("data._id");
@@ -41,7 +37,6 @@ public class TestData {
         return ingredients.subList(0, Math.min(2, ingredients.size()));
     }
 
-    // ⚡ Невалидные ингредиенты
     public static List<String> invalidIngredients() {
         return Collections.singletonList("invalid-hash-" + UUID.randomUUID());
     }
